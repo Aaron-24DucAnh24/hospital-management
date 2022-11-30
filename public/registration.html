@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Registration</title>
+	<link rel="stylesheet" type="text/css" href="/index.css">
+</head>
+<body>
+	<div class="top">
+		<div class="header">
+			<a href="/logout">Log out</a>
+			<div class="header-right">
+				Medical Administration System
+			</div>
+		</div>
+		<div class="topnav">
+			<a href="#home">Home</a>
+			<a href="search.html">Search for patient's info</a>
+			<a class="active" href="#registration">Registration</a>
+			<a href="patients-list.html">Patients' record</a>
+			<a href="medical-report.html">Medical report</a>
+		</div>
+	</div>
+	<div class="copy">
+		<h1>Add new patient</h1>
+		<div class="panel-body">
+			<form action="/addPatient" method="post">
+				<div class="form-group">
+					<select name="pType" id="pType">
+						<option value="">Patient type</option>
+						<option value="in">Inpatient</option>
+						<option value="out">Outpatient</option>
+					</select>
+				</div>	
+				<div class="form-group">
+						<input class="form-control" type="text" name="pFName" id="pFName" onblur="if (this.value=='') this.value = ''" type="text" placeholder="First name">
+					</select>
+				</div>
+				<div class="form-group">
+						<input class="form-control" type="text" name="pLName" id="pLName" onblur="if (this.value=='') this.value = ''" type="text" placeholder="Last name">
+					</select>
+				</div>
+				<div class="form-group">
+					<select name="gender" id="gender">
+						<option  value="">Gender</option>
+						<option value="M">Male</option>
+						<option value="F">Female</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="text" name="pPNo" id="pPNo" onblur="if (this.value=='') this.value = ''" type="text" placeholder="Phone number">
+					</select>
+				</div>
+				<div class="form-group">
+					<input class="form-control" type="text" name="pAdd" id="pAdd" onblur="if (this.value=='') this.value = ''" type="text" placeholder="Address">
+					</select>
+				</div>
+				<label id="add-patient-btn"><img src="./picture/vector60-2467-01.jpg" style="width:30px" class="submit-form" name="submit"></label>
+			</form>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script>
+		var loginData = {}
+		document.getElementById('pType').onchange = () => {
+			loginData.type = document.getElementById('pType').value
+		}
+		document.getElementById('pFName').onchange = () => {
+			loginData.fname = document.getElementById('pFName').value
+		}
+		document.getElementById('pLName').onchange = () => {
+			loginData.lname = document.getElementById('pLName').value
+		}
+		document.getElementById('gender').onchange = () => {
+			loginData.gender = document.getElementById('gender').value
+		}
+		document.getElementById('pPNo').onchange = () => {
+			loginData.phone = document.getElementById('pPNo').value
+		}
+		document.getElementById('pAdd').onchange = () => {
+			loginData.addr = document.getElementById('pAdd').value
+		}
+		document.getElementById('add-patient-btn').addEventListener('click', addPatientHandler)
+		function addPatientHandler () {
+			let isValid = Object.values(loginData).every(e=>e!='')
+			let length =  Object.keys(loginData).length
+			if(isValid && !jQuery.isEmptyObject(loginData) && length==6){
+				$.ajax({
+					type: 'POST',
+					url: "http://localhost:3000/addPatient",
+					data: loginData,
+					success: function(resultData) {
+						if(resultData){
+							alert('Add patient successfully!')
+						}
+						else
+							alert('Cannot add new patient!')
+					}
+				})
+			} else {
+				alert('All the field must be filled!')
+			}
+		}		
+	</script>
+</body>
+</html>

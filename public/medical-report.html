@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>List of patients of a Doctor</title>
+	<link rel="stylesheet" type="text/css" href="/index.css">
+</head>
+<body>
+	<div class="top">
+		<div class="header">
+			<a href="logout">Log out</a>
+			<div class="header-right">
+				Medical Administration System
+			</div>
+		</div>
+		<div class="topnav">
+			<a href="#home">Home</a>
+			<a href="search.html">Search for patient's info</a>
+			<a href="registration.html">Registration</a>
+			<a href="patients-list.html">Patients' record</a>
+			<a class="active" href="medical-report.html">Medical report</a>
+		</div>
+	</div>
+	<div class="copy">
+		<h1>Detail medication report for each treatment - examination</h1>
+		<div class="panel-body">
+			<form class="search">
+				<div class="form-group">
+						<input class="form-control" id="search-info" type="text" name="patients_record" placeholder="ID of patient" onfocus="this.placeholder = ''" onblur="this.placeholder = 'ID of patient'">
+				</div>
+			</form>
+			<div class="form-group">
+				<input type="submit" id="of_patients_record" value="Submit">
+			</div>
+		</div>
+		<br>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script>
+		var id=''
+		var copyBox = document.querySelector('.copy')
+		document.querySelector('#search-info').onchange = ()=>{
+			id = document.querySelector('#search-info').value
+		}
+		document.querySelector('#of_patients_record').addEventListener('click', ()=> {
+			if(id.length != 9) alert('Invalid patient id!')
+			else {
+				$.ajax({
+					type: 'POST',
+					url: "http://localhost:3000/makeReport",
+					data: {id: id},
+					success: function(resultData) {
+						if(resultData.length == 0){
+							copyBox.innerHTML+=
+							`<h2>Patient: <span style="color: black;">NO PATIENT FOUND	</span></h2>`
+						}
+						else{
+							copyBox.innerHTML+=
+							`<h2>Patient: <span style="color: black;">${resultData[0][0].NAME}</span></h2>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th scope="col">No.</th>
+												<th scope="col">Time</th>
+												<th scope="col">Service Fee</th>
+												<th scope="col">Medication Fee</th>
+												<th scope="col">Total fee</th>
+											</tr>
+										</thead>
+
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>`
+							if(resultData[0][0].type == 'in') {
+								var tbody = document.querySelector('tbody')
+								var count = 1
+								for(var tr of resultData[1][0]){
+									var medFee = 0
+									var totalFee = 0
+									for(var med of resultData[2][0]){
+										if(
+											tr.ADMISSION_DATE == med.ADMISSION_DATE
+											&& tr.IPREFIX == med.IPREFIX
+											&& tr.IPOSTFIX == med.IPOSTFIX
+											&& tr.START_DATE == med.START_DATE
+											&& tr.END_DATE == med.END_DATE
+										)
+										medFee += med.USE_QUANTITY*med.PRICE
+										totalFee = tr.FEE + medFee 
+									}
+
+									tbody.innerHTML+=
+									`<tr>
+										<td style="background-color:white;" class="bold" scope="col">${count++}</td>
+										<td style="background-color:white;"class="bold"scope="col">${tr.ADMISSION_DATE}</td>
+										<td style="background-color:white;"class="bold"scope="col">${tr.FEE} vnd</td>
+										<td style="background-color:white;"class="bold"scope="col">${medFee} vnd</td>
+										<td style="background-color:white;"class="bold"scope="col">${totalFee} vnd</td>
+									</tr>`
+
+									for(var med of resultData[2][0]){
+										if(
+											tr.ADMISSION_DATE == med.ADMISSION_DATE
+											&& tr.IPREFIX == med.IPREFIX
+											&& tr.IPOSTFIX == med.IPOSTFIX
+											&& tr.START_DATE == med.START_DATE
+											&& tr.END_DATE == med.END_DATE
+										)
+										tbody.innerHTML+=
+										`<tr>
+											<td style="background-color:white;"scope="col"></td>
+											<td style="background-color:white;"scope="col"></td>
+											<td style="background-color:white;"scope="col"></td>
+											<td style="background-color:white; font-style: italic; color: blue;" scope="col">${med.NAME}: ${med.USE_QUANTITY} x ${med.PRICE} vnd</td>
+											<td style="background-color:white;"scope="col"></td>
+										</tr>`
+										medFee += med.USE_QUANTITY*med.PRICE
+										totalFee = tr.FEE + medFee 
+									}
+								}
+							}
+							else {
+								console.log(resultData)
+								var tbody = document.querySelector('tbody')
+								var count = 1
+								for(var ex of resultData[1][0]){
+									var medFee = 0
+									var totalFee = 0
+									for(var med of resultData[2][0]){
+										if(
+											ex.OPREFIX == med.OPREFIX
+											&& ex.OPOSTFIX == med.OPOSTFIX
+											&& ex.TIME == med.TIME
+										)
+										medFee += med.CONSUME_QUANTITY*med.PRICE
+										totalFee = ex.FEE + medFee 
+									}
+
+									tbody.innerHTML+=
+									`<tr>
+										<td style="background-color:white;"class="bold" scope="col">${count++}</td>
+										<td style="background-color:white;"class="bold"scope="col">${ex.TIME}</td>
+										<td style="background-color:white;"class="bold"scope="col">${ex.FEE} vnd</td>
+										<td style="background-color:white;"class="bold"scope="col">${medFee} vnd</td>
+										<td style="background-color:white;"class="bold"scope="col">${totalFee} vnd</td>
+									</tr>`
+
+									for(var med of resultData[2][0]){
+										if(
+											ex.OPREFIX == med.OPREFIX
+											&& ex.OPOSTFIX == med.OPOSTFIX
+											&& ex.TIME == med.TIME
+										)
+										tbody.innerHTML+=
+										`<tr>
+											<td style="background-color:white;"scope="col"></td>
+											<td style="background-color:white;"scope="col"></td>
+											<td style="background-color:white;"scope="col"></td>
+											<td style="background-color:white; font-style: italic; color: blue;" scope="col">${med.NAME}: ${med.CONSUME_QUANTITY} x ${med.PRICE} vnd</td>
+											<td style="background-color:white;"scope="col"></td>
+										</tr>`
+										medFee += med.CONSUME_QUANTITY*med.PRICE
+										totalFee = ex.FEE + medFee 
+									}
+								}
+							}
+						}
+					}
+				})
+			}
+		})
+ 	</script>
+</body>
+</html>

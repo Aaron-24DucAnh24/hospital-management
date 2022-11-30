@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Search patients' info</title>
+	<link rel="stylesheet" type="text/css" href="/index.css">
+</head>
+<body>
+	<div class="top">
+		<div class="header">
+			<a href="logout">Log out</a>
+			<div class="header-right">
+				Medical Administration System
+			</div>
+		</div>
+		<div class="topnav">
+			<a href="#home">Home</a>
+			<a class="active" href="#search_patients">Search for patient's info</a>
+			<a href="registration.html">Registration</a>
+			<a href="patients-list.html">Patients' record</a>
+			<a href="medical-report.html">Medical report</a>
+		</div>
+	</div>
+	<div class="copy">
+		<h1>Patient detail information</h1>
+		<div class="panel-body">
+			<form class="search">
+				<div class="form-group">
+						<input class="form-control" id="search-id" type="text" name="pID" placeholder="ID of Patient">
+					</select>
+				</div>
+			<div class="form-group">
+				<input type="submit" name="submit" value="Submit" id="searchBtn">
+			</div>
+			</form>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script>
+		var id=''
+		var copyBox = document.querySelector('.copy')
+		document.querySelector('#search-id').onchange = ()=>{
+			id = document.querySelector('#search-id').value
+		}
+		document.querySelector('#searchBtn').addEventListener('click', (e)=>{
+			e.preventDefault()
+			if(id.length === 9) {
+				$.ajax({
+					type: 'POST',
+					url: "http://localhost:3000/searchById",
+					data: {id: id},
+					success: function(resultData) {
+						if(resultData[0].length == 0) {
+							copyBox.innerHTML+=
+							`<br><h2>RESPONSE: <span style="color: black;"">NO PATIENT FOUND</span></h2>`
+						}
+						else {
+							copyBox.innerHTML+=
+							`<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th scope="col">Patient ID</th>
+												<th scope="col">Name</th>
+												<th scope="col">Gender</th>
+												<th scope="col">Address</th>
+												<th scope="col">Phone</th>
+												<th scope="col">Treatment (examination) number</th>
+											</tr>
+										</thead>
+										<tbody>
+											
+										</tbody>
+									</table>
+								</div>
+							</div>`
+							document.querySelector('tbody').innerHTML +=
+							`
+							<tr>
+								<td scope="col">${resultData[0][0].PREFIX}${resultData[0][0].POSTFIX}</td>
+								<td scope="col">${resultData[0][0].FNAME} ${resultData[0][0].LNAME}</td>
+								<td scope="col">${resultData[0][0].GENDER}</td>
+								<td scope="col">${resultData[0][0].ADDRESS}</td>
+								<td scope="col">${resultData[0][0].PHONE}</td>
+								<td scope="col">${resultData[1][0].NUM}</td>
+							</tr>
+							`
+						}
+					}
+				})
+			}
+			else {
+				alert('Invalid patient id!')
+			}
+		})
+
+	</script>
+</body>
+</html>

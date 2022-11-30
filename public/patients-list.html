@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>List of patients of a Doctor</title>
+	<link rel="stylesheet" type="text/css" href="/index.css">
+</head>
+<body>
+	<div class="top">
+		<div class="header">
+			<a href="logout">Log out</a>
+			<div class="header-right">
+				Medical Administration System
+			</div>
+		</div>
+		<div class="topnav">
+			<a href="#home">Home</a>
+			<a href="search.html">Search for patient's info</a>
+			<a href="registration.html">Registration</a>
+			<a class="active" href="#patients_record">Patients' record</a>
+			<a href="medical-report.html">Medical report</a>
+		</div>
+	</div>
+	<div class="copy">
+		<h1>List of all patients of a Doctor</h1>
+		<div class="panel-body">
+			<form class="search">
+				<div class="form-group">
+						<input class="form-control" id="search-info" type="text" name="patients_record" placeholder="ID of Doctor" onfocus="this.placeholder = ''" onblur="this.placeholder = 'ID of Doctor'">
+					</select>
+				</div>
+			</form>
+			<div class="form-group">
+				<input type="submit" id="of_patients_record" value="Submit">
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script>
+		var doctorIP = ''
+		var copyBox = document.querySelector('.copy')
+		document.querySelector('#search-info').onchange = () =>{
+			doctorIP = document.querySelector('#search-info').value
+		}
+		document.querySelector('#of_patients_record').onclick = () => {
+			if(doctorIP.length != 6){
+				alert('ID of Doctor is invalid!')
+				return
+			} else {
+				$.ajax({
+					type: 'POST',
+					url: "http://localhost:3000/searchByDoctor",
+					data: {ip: doctorIP},
+					success: function(resultData) {
+						console.log(resultData)
+						if(resultData[0].length == 0){
+							copyBox.innerHTML+=
+							`<br><h2>Doctor: <span style="color: black;"">NO DOCTOR FOUND</span></h2>`
+						}
+						else {
+							copyBox.innerHTML+=
+							`<br><h2>Doctor: <span style="color: black;"">${resultData[0][0].FNAME} ${resultData[0][0].LNAME}</span></h2>
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th scope="col">Patient ID</th>
+												<th scope="col">Name</th>
+												<th scope="col">Gender</th>
+												<th scope="col">Address</th>
+												<th scope="col">Phone</th>
+											</tr>
+										</thead>
+										<tbody>
+											
+										</tbody>
+									</table>
+								</div>
+							</div>`
+							var tbody = document.querySelector('tbody')
+							for(var pat of resultData[1][0]){
+								tbody.innerHTML+=
+								`
+								<tr>
+									<td scope="col">${pat.ID}</td>
+									<td scope="col">${pat.NAME}</td>
+									<td scope="col">${pat.GENDER}</td>
+									<td scope="col">${pat.ADDRESS}</td>
+									<td scope="col">${pat.PHONE}</td>
+								</tr>
+								`
+							}
+							for(var pat of resultData[2][0]){
+								tbody.innerHTML+=
+								`
+								<tr>
+									<td scope="col">${pat.ID}</td>
+									<td scope="col">${pat.NAME}</td>
+									<td scope="col">${pat.GENDER}</td>
+									<td scope="col">${pat.ADDRESS}</td>
+									<td scope="col">${pat.PHONE}</td>
+								</tr>
+								`
+							}
+						}
+					}
+				})
+			}
+		}
+ 	</script>
+</body>
+</html>

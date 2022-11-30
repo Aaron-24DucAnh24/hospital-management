@@ -1,0 +1,208 @@
+h1{
+  color: #3D8361;
+}
+h2{
+  color: #1C6758;
+}
+body {
+  padding: 0px 10px;
+  margin: 0px 20px;
+  font-family: "Arial";
+}
+/*top_div*/
+.top a{
+  float: left;
+  color: dimgrey;
+  text-align: center;
+  font-size: 12px;
+  text-decoration: none;
+}
+.header {
+  background-color: #ddd;
+  overflow: hidden;
+}
+.header a{
+  float: left;
+  text-align: center;
+  color: green;
+  padding: 7px 10px;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: white;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+}
+.topnav a{
+  padding: 10px 10px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: #1C6758;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  color: #1C6758;
+  font-weight: bold;
+}
+
+/**********/
+/*Body copy*/
+/**********/
+
+.panel-body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form-group{
+  float: left;
+  padding: 14px 8px;
+}
+.form-control, .form-group select{
+  text-align: center;
+  width: 180px;
+  font-size: 14px;
+  color: black;
+  padding: 5px;
+}
+.submit-form{
+  float: left;
+  margin-top:12px;
+  margin-left: 10px;
+}
+/*******************/
+/*LOG IN INTERFACE*/
+/*****************/
+.header-right{
+  font-size: 12px;
+  float: right;
+  text-align: center;
+  color: black;
+  font-weight: bolder;
+  padding: 7px 10px;
+}
+.container{
+  border-radius: 5px;
+  background-color: #ddd;
+  width: 330px;
+  padding: 20px;
+  margin:auto;
+  margin-top: 50px;
+  vertical-align: middle;
+}
+.col-left{
+  float: left;
+  wdith: 25%;
+  margin-top: 6px;
+}
+.col-right{
+  float: left;
+  wdith: 75%;
+  margin-top: 6px;
+}
+.row:after{
+  content:"";
+  display: table;
+  clear: both;
+}
+.row label{
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+.row input[type=text],.row input[type=password], .row select {
+  width: 200px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+.row{
+  padding: 5px 0px;
+}
+*{
+  box-sizing: border-box;
+}
+@media screen and (max-width: 600px) {
+  .col-right, .col-left, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+.login-title{
+  font-size: 32px;
+  text-align: center;
+  font-weight: bolder;
+  color: #3D8361;
+  padding-bottom: 15px;
+}
+input[type=submit]{
+  color:whitesmoke;
+  padding: 10px 10px;
+  float: right;
+  cursor: pointer;
+  border: none;
+  border-radius: 2px;
+  background-color: #3D8361;
+  margin: 0px 7px;
+}
+input[type=submit]:hover{
+  background-color: #1C6758;
+}
+/*******************/
+/*SEARCH INTERFACE*/
+/*****************/
+#search-id{
+  padding: 10px 50px;
+}
+/****************************/
+/*PATIENTS RECORD INTERFACE*/
+/**************************/
+#of_patients_record{
+  background-color: #D6CDA4;
+  color: #EEF2E6;
+}
+#of_patients_record:hover{
+  background-color: #EEF2E6;
+  color: #1C6758;
+}
+/*Color code
+D6CDA4: Dutch White
+EEF2E6: Ivory
+3D8361: Amazon
+1C6758: Bottle Green
+*/
+/******************/
+/*TABLE INTERFACE*/
+/****************/
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+  color: #1C6758;
+}
+th{
+  text-align: center;
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+td{
+  font-weight: normal;
+  text-align: center;
+  color: black;
+  border: 1px solid #dddddd;
+}
+
+.bold {
+  font-weight: bold;
+}
