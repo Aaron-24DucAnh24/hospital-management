@@ -5,7 +5,7 @@ const path = require('path')
 function handleRequest(app, db) {
 
 	app.get('/', isLogged, (req, res) => {
-		res.sendFile(path.join(__dirname, '/public/patient-list.html'))
+		res.sendFile(path.join(__dirname, '/public/patients-list.html'))
 	})
 
 	app.get('/loginPage', (req, res) => {
