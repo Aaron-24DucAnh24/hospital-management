@@ -1,14 +1,15 @@
 
 const isLogged = require('./middleware')
+const path = require('path')
 
 function handleRequest(app, db) {
 
 	app.get('/', isLogged, (req, res) => {
-		res.sendFile('/Users/ducanh/Documents/GitHub/hospital-management/public/patients-list.html')
+		res.sendFile(path.join(__dirname, '/public/patient-list.html'))
 	})
 
 	app.get('/loginPage', (req, res) => {
-		res.sendFile('/Users/ducanh/Documents/GitHub/hospital-management/public/log-in.html')
+		res.sendFile(path.join(__dirname, '/public/log-in.html'))
 	})
 
 	app.post('/loginCheck', (req, res) => {
